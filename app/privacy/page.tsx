@@ -1,5 +1,38 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, Eye, FileText, AlertCircle, CheckCircle, Database } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy - The Octopus Labs | Data Protection & Privacy",
+  description: "The Octopus Labs Privacy Policy. Learn how we collect, use, and safeguard your personal data in accordance with UK GDPR and the Data Protection Act 2018. Your privacy rights and data protection.",
+  keywords: "privacy policy, data protection, GDPR, UK GDPR, privacy rights, data security, personal data",
+  openGraph: {
+    title: "Privacy Policy - The Octopus Labs | Data Protection & Privacy",
+    description: "Learn how we collect, use, and safeguard your personal data in accordance with UK GDPR and the Data Protection Act 2018.",
+    url: "https://theoctopuslabs.com/privacy",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image-privacy.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Privacy Policy - The Octopus Labs",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy - The Octopus Labs",
+    description: "Learn how we collect, use, and safeguard your personal data in accordance with UK GDPR.",
+    images: ["/og-image-privacy.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function PrivacyPage() {
   return (

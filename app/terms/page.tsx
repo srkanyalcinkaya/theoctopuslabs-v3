@@ -1,5 +1,38 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { FileText, Shield, AlertCircle, CheckCircle } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Terms of Service - The Octopus Labs | Terms & Conditions",
+  description: "Read The Octopus Labs Terms of Service. Our terms and conditions for web development, web design, and all services. Payment terms, intellectual property rights, cancellation policy, and more.",
+  keywords: "terms of service, terms and conditions, service terms, legal terms, UK terms of service",
+  openGraph: {
+    title: "Terms of Service - The Octopus Labs | Terms & Conditions",
+    description: "Read The Octopus Labs Terms of Service. Our terms and conditions for web development, web design, and all services.",
+    url: "https://theoctopuslabs.com/terms",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image-terms.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Terms of Service - The Octopus Labs",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Service - The Octopus Labs",
+    description: "Read The Octopus Labs Terms of Service. Our terms and conditions for all services.",
+    images: ["/og-image-terms.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function TermsPage() {
   return (

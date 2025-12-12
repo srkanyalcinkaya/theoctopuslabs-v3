@@ -1,5 +1,34 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Gift, CheckCircle, AlertCircle, Clock, Star } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Special Offers - The Octopus Labs | Current Promotions & Discounts",
+  description: "Discover our current offers and promotions at The Octopus Labs. New client special offer: 20% off your first project. Get free consultation, 1 year free technical support, and free backup service.",
+  keywords: "special offers, promotions, discounts, new client offer, web development offers, UK web services offers",
+  openGraph: {
+    title: "Special Offers - The Octopus Labs | Current Promotions & Discounts",
+    description: "Discover our current offers and promotions. New client special offer: 20% off your first project with free consultation and support.",
+    url: "https://theoctopuslabs.com/offer",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image-offer.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Special Offers - The Octopus Labs",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Special Offers - The Octopus Labs",
+    description: "Discover our current offers and promotions. New client special offer: 20% off your first project.",
+    images: ["/og-image-offer.jpg"],
+  },
+};
 
 export default function OfferPage() {
   return (

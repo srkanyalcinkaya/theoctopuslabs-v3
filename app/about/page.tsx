@@ -1,8 +1,37 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Code, TrendingUp, Award, Heart, Users, Briefcase, ArrowRight, Layout, Server, Palette, FileCode, Layers, Terminal, Database, Network, GitBranch, Image, PenTool, Cloud, Box, CreditCard, BarChart3, Package, Globe, Shield, Zap } from "lucide-react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+
+export const metadata: Metadata = {
+  title: "About Us - The Octopus Labs | Professional Web Development Team",
+  description: "Learn about The Octopus Labs - a professional web development and design company. We've served over 10,000+ satisfied customers with bespoke web development, web design, e-commerce, mobile apps, SEO, and graphic design services.",
+  keywords: "about the octopus labs, web development company, web design team, UK developers, professional web services",
+  openGraph: {
+    title: "About Us - The Octopus Labs | Professional Web Development Team",
+    description: "Learn about The Octopus Labs - a professional web development and design company. Over 10,000+ satisfied customers.",
+    url: "https://theoctopuslabs.com/about",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image-about.jpg",
+        width: 1200,
+        height: 630,
+        alt: "About The Octopus Labs",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us - The Octopus Labs",
+    description: "Learn about The Octopus Labs - a professional web development and design company.",
+    images: ["/og-image-about.jpg"],
+  },
+};
 
 export default function AboutPage() {
   return (

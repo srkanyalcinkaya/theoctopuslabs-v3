@@ -1,5 +1,38 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { CreditCard, Shield, CheckCircle, AlertCircle, Lock, Banknote } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Payment Methods - The Octopus Labs | Secure Payment Options",
+  description: "Secure and convenient payment options at The Octopus Labs. We accept credit cards, debit cards, bank transfers, and online payments. All transactions processed in accordance with UK payment regulations.",
+  keywords: "payment methods, secure payment, credit card payment, bank transfer, payment terms, UK payment",
+  openGraph: {
+    title: "Payment Methods - The Octopus Labs | Secure Payment Options",
+    description: "Secure and convenient payment options. We accept credit cards, debit cards, bank transfers, and online payments.",
+    url: "https://theoctopuslabs.com/payment",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image-payment.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Payment Methods - The Octopus Labs",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Payment Methods - The Octopus Labs",
+    description: "Secure and convenient payment options. All transactions processed securely.",
+    images: ["/og-image-payment.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function PaymentPage() {
   return (

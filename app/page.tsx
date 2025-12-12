@@ -1,8 +1,48 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Activity, Blend, LayoutPanelTop, PenTool, Star, TabletSmartphone, VectorSquare, WholeWord, Zap, ZapIcon } from "lucide-react";
 import { FeaturesAnimatedList } from "@/components/features-animated-list";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import AppleCardsCarouselDemo from "@/components/apple-cards-carousel-demo";
+
+export const metadata: Metadata = {
+  title: "The Octopus Labs - Professional Web Development & Design Solutions",
+  description: "The Octopus Labs offers professional bespoke web development, web design, e-commerce solutions, mobile app development, SEO services, and graphic design. Over 10,000+ satisfied customers. Get 1 year free technical support and 30-day money-back guarantee.",
+  keywords: "web development, web design, e-commerce, mobile app development, SEO, graphic design, bespoke web development, UK web development",
+  openGraph: {
+    title: "The Octopus Labs - Professional Web Development & Design Solutions",
+    description: "Professional solutions for your business needs. Specialised in Bespoke System Development & Web Design. Over 10,000+ satisfied customers.",
+    url: "https://theoctopuslabs.com",
+    siteName: "The Octopus Labs",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Octopus Labs - Professional Web Development & Design",
+      },
+    ],
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Octopus Labs - Professional Web Development & Design Solutions",
+    description: "Professional solutions for your business needs. Specialised in Bespoke System Development & Web Design.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 export default function Home() {
 
