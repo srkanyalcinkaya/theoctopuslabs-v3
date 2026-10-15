@@ -197,10 +197,7 @@ export default function PrivacyPage() {
         <strong>The Octopus Labs</strong>
         <br />
         Email: <a href="mailto:privacy@theoctopuslabs.com">privacy@theoctopuslabs.com</a>
-        <br />
-        Phone: 8 800 700-93-29
-        <br />
-        Address: [Your Business Address]
+        Address: London, UK
       </address>
       <p>
         If you are not satisfied with our response, you have the right to lodge a complaint with the UK Information Commissioner&apos;s Office (ICO):

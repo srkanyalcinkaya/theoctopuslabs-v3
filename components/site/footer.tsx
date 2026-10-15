@@ -5,6 +5,8 @@ import { shell } from "./ui";
 
 const company = [
   { label: "About", href: "/about" },
+  { label: "Products", href: "/products" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
   { label: "Get a free quote", href: "/quote" },
   { label: "Special offers", href: "/offer" },
@@ -51,7 +53,7 @@ export function Footer() {
                 {contact.email}
               </a>
             </li>
-            <li className="text-(--c-muted)">{contact.phone}</li>
+            {/* <li className="text-(--c-muted)">{contact.phone}</li> */}
           </ul>
         </div>
         <Column title="Services" links={serviceLinks.slice(0, 4)} />

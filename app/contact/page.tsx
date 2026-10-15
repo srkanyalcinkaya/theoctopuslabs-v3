@@ -22,13 +22,13 @@ export default function ContactPage() {
                 <p className="mt-1 text-sm text-(--c-muted)">We&apos;ll respond within 24 hours</p>
               </dd>
             </div>
-            <div className="border-b border-(--c-ink)/10 py-6">
+            {/* <div className="border-b border-(--c-ink)/10 py-6">
               <dt className="text-sm text-(--c-muted)">Phone</dt>
               <dd className="mt-1">
                 <span className="f-display text-2xl font-medium">{contact.phone}</span>
                 <p className="mt-1 text-sm text-(--c-muted)">Free call within Turkey</p>
               </dd>
-            </div>
+            </div> */}
             <div className="border-b border-(--c-ink)/10 py-6">
               <dt className="text-sm text-(--c-muted)">Address</dt>
               <dd className="mt-1">

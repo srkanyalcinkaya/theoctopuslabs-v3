@@ -10,7 +10,8 @@ import { services } from "./data";
 import { QuoteButton, shell } from "./ui";
 
 const links = [
-  { label: "How we work", href: "/#process" },
+  { label: "Products", href: "/products" },
+  { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

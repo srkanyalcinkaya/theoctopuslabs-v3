@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
+import { getEntrySlugs } from "@/lib/cms-content";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://theoctopuslabs.com";
   const currentDate = new Date();
 
@@ -112,5 +113,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  return [...mainPages, ...servicePages, ...otherPages];
+  // Blog posts and products from DatoCMS; the static pages still ship if the CMS is unreachable.
+  const cmsPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/blog`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/products`, lastModified: currentDate, changeFrequency: "weekly", priority: 0.8 },
+  ];
+  try {
+    const [posts, products] = await Promise.all([getEntrySlugs("post"), getEntrySlugs("product")]);
+    for (const [base, entries] of [["blog", posts], ["products", products]] as const) {
+      for (const entry of entries) {
+        cmsPages.push({
+          url: `${baseUrl}/${base}/${entry.slug}`,
+          lastModified: new Date(entry.date),
+          changeFrequency: "monthly",
+          priority: 0.7,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("sitemap: could not load DatoCMS entries", error);
+  }
+
+  return [...mainPages, ...servicePages, ...cmsPages, ...otherPages];
 }

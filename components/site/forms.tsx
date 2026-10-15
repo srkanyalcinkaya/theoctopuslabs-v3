@@ -1,17 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { sendEnquiry, type EnquiryKind } from "@/app/actions/enquiry";
 import { contact, services } from "./data";
 
-// There is no form backend yet, so submitting opens the visitor's email app with the details filled in.
-function openEmail(subject: string, lines: [string, string][]) {
-  const body = lines
-    .filter(([, value]) => value.trim())
-    .map(([label, value]) => `${label}:\n${value.trim()}`)
-    .join("\n\n");
-  window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+function useEnquiry(kind: EnquiryKind) {
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  const submit = (form: HTMLFormElement, extra: Record<string, string> = {}) => {
+    const input: Record<string, string> = { ...extra };
+    new FormData(form).forEach((value, key) => {
+      input[key] = String(value);
+    });
+    setError(null);
+    startTransition(async () => {
+      const result = await sendEnquiry(kind, input);
+      if (result.ok) setSent(true);
+      else setError(result.error);
+    });
+  };
+
+  return { sent, error, pending, submit, reset: () => setSent(false) };
+}
+
+// Hidden from people; bots that fill every field reveal themselves here.
+function Honeypot() {
+  return (
+    <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+      <label htmlFor="website">Leave this field empty</label>
+      <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+    </div>
+  );
+}
+
+function FormError({ message }: { message: string | null }) {
+  if (!message) return null;
+  return (
+    <p role="alert" className="rounded-2xl bg-(--c-blush) px-5 py-4 text-sm leading-relaxed">
+      {message} Please try again, or email us at{" "}
+      <a href={`mailto:${contact.email}`} className="font-medium underline underline-offset-2">
+        {contact.email}
+      </a>
+      .
+    </p>
+  );
 }
 
 function Field({
@@ -41,45 +77,33 @@ function Field({
 function SentNotice({ onReset }: { onReset: () => void }) {
   return (
     <div role="status" className="rounded-3xl bg-(--c-blush) p-8">
-      <h3 className="f-display text-2xl font-semibold">Your email is ready to send.</h3>
+      <h3 className="f-display text-2xl font-semibold">Thanks, we have received it.</h3>
       <p className="mt-3 leading-relaxed text-(--c-muted)">
-        We opened your email app with your message filled in. Press send there and we will reply within 24 hours. If
-        nothing opened, email us directly at{" "}
-        <a href={`mailto:${contact.email}`} className="text-(--c-ink) underline decoration-(--c-red) decoration-2 underline-offset-4">
-          {contact.email}
-        </a>
-        .
+        Your message is with our team and we will reply within 24 hours to the email address you gave us.
       </p>
       <button type="button" onClick={onReset} className="mt-6 font-medium underline underline-offset-4">
-        Edit your message
+        Send another message
       </button>
     </div>
   );
 }
 
 const submitClass =
-  "inline-flex h-13 w-full items-center justify-center rounded-full bg-(--c-red) px-8 font-medium text-white transition-colors duration-300 hover:bg-(--c-ink) sm:w-auto";
+  "inline-flex h-13 w-full items-center justify-center rounded-full bg-(--c-red) px-8 font-medium text-white transition-colors duration-300 hover:bg-(--c-ink) disabled:cursor-wait disabled:opacity-70 sm:w-auto";
 
 export function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const { sent, error, pending, submit, reset } = useEnquiry("contact");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const get = (key: string) => String(data.get(key) ?? "");
-    openEmail(get("subject") || "Website enquiry", [
-      ["Name", `${get("firstName")} ${get("lastName")}`],
-      ["Email", get("email")],
-      ["Phone", get("phone")],
-      ["Message", get("message")],
-    ]);
-    setSent(true);
+    submit(e.currentTarget);
   };
 
-  if (sent) return <SentNotice onReset={() => setSent(false)} />;
+  if (sent) return <SentNotice onReset={reset} />;
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} className="relative grid gap-5 sm:grid-cols-2">
+      <Honeypot />
       <Field label="First name" htmlFor="firstName" required>
         <input id="firstName" name="firstName" autoComplete="given-name" required className="field" />
       </Field>
@@ -98,9 +122,10 @@ export function ContactForm() {
       <Field label="Message" htmlFor="message" required className="sm:col-span-2">
         <textarea id="message" name="message" required placeholder="Tell us about your project" className="field" />
       </Field>
-      <div className="sm:col-span-2">
-        <button type="submit" className={submitClass}>
-          Send message
+      <div className="space-y-4 sm:col-span-2">
+        <FormError message={error} />
+        <button type="submit" disabled={pending} className={submitClass}>
+          {pending ? "Sending…" : "Send message"}
         </button>
       </div>
     </form>
@@ -121,7 +146,7 @@ function Fieldset({ legend, children }: { legend: string; children: React.ReactN
 }
 
 export function QuoteForm() {
-  const [sent, setSent] = useState(false);
+  const { sent, error, pending, submit, reset } = useEnquiry("quote");
   const [picked, setPicked] = useState<string[]>([]);
   const [servicesError, setServicesError] = useState(false);
 
@@ -137,27 +162,14 @@ export function QuoteForm() {
       document.getElementById("services-needed")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    const data = new FormData(e.currentTarget);
-    const get = (key: string) => String(data.get(key) ?? "");
-    openEmail(`Quote request${get("company") ? ` from ${get("company")}` : ""}`, [
-      ["Name", `${get("firstName")} ${get("lastName")}`],
-      ["Email", get("email")],
-      ["Phone", get("phone")],
-      ["Company", get("company")],
-      ["Project type", get("projectType")],
-      ["Estimated budget", get("budget")],
-      ["Timeline", get("timeline")],
-      ["Services needed", picked.join(", ")],
-      ["About the project", get("description")],
-      ["Additional requirements", get("additional")],
-    ]);
-    setSent(true);
+    submit(e.currentTarget, { services: picked.join(", ") });
   };
 
-  if (sent) return <SentNotice onReset={() => setSent(false)} />;
+  if (sent) return <SentNotice onReset={reset} />;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-12">
+    <form onSubmit={handleSubmit} className="relative space-y-12">
+      <Honeypot />
       <Fieldset legend="About you">
         <Field label="First name" htmlFor="firstName" required>
           <input id="firstName" name="firstName" autoComplete="given-name" required className="field" />
@@ -267,10 +279,11 @@ export function QuoteForm() {
           </Link>
           .
         </p>
-        <button type="submit" className={submitClass}>
-          Send quote request
+        <button type="submit" disabled={pending} className={submitClass}>
+          {pending ? "Sending…" : "Send quote request"}
         </button>
       </div>
+      <FormError message={error} />
     </form>
   );
 }

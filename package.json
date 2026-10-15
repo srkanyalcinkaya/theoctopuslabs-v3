@@ -23,6 +23,7 @@
     "motion": "^12.23.26",
     "next": "16.0.8",
     "react": "19.2.1",
+    "react-datocms": "^8.1.2",
     "react-dom": "19.2.1",
     "tailwind-merge": "^3.4.0"
   },
