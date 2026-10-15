@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/ui/navbar-menu";
-import { Footer } from "@/components/ui/footer";
-import { Inter, Orbitron } from "next/font/google";
+import { Header } from "@/components/site/header";
+import { Footer } from "@/components/site/footer";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
+const display = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const body = Instrument_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
@@ -78,10 +78,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased ${orbitron.variable} ${inter.variable} font-inter`}
-      >
-        <Navbar />
+      <body className={`${display.variable} ${body.variable}`}>
+        <Header />
         {children}
         <Footer />
         <GoogleAnalytics gaId="G-7N1HQTLCZ0" />
